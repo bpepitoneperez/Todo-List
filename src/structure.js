@@ -1,6 +1,8 @@
 const projects = [];
 let projectsIndex = 0;
 
+
+
 const Project = (name) => {
     let list = [];
     let todoIndex = 0;
@@ -13,15 +15,16 @@ const Project = (name) => {
     }
 }
 
-const Todo = (title, description, dueDate, priority, project) => {
+const Todo = (title, description, dueDate, project) => {
     let index = 0;
+    let complete = false;
     return {
         title,
         description,
         dueDate,
-        priority,
         project,
         index,
+        complete,
     }
 }
 
@@ -58,4 +61,25 @@ const removeProject = (index) => {
     projectsIndex--;
 }
 
-export {Todo, Project, addTodo, removeTodo, addProject, removeProject}
+let defaultProject = Project('Default');
+addProject(defaultProject);
+
+let todo1 = Todo('Create', 'Create more tasks', 'tomorrow', defaultProject);
+
+addTodo(todo1, defaultProject);
+
+let todo2 = Todo('Creat2', 'Create more tasks', 'tomorrow', defaultProject);
+
+addTodo(todo2, defaultProject);
+
+let todo3 = Todo('Creat3', 'Create more tasks', 'tomorrow', defaultProject);
+
+addTodo(todo3, defaultProject);
+
+
+let project2 = Project("project2");
+addProject(project2);
+let todo4 = Todo('Creat3', 'Create more tasks', 'tomorrow', defaultProject);
+
+addTodo(todo4, project2);
+export {projects, Todo, Project, addTodo, removeTodo, addProject, removeProject}

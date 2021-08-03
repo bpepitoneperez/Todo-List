@@ -1,6 +1,7 @@
 html {
     padding: 0;
     margin: 0;
+    background-color: #e8ecee;
 }
 
 body {
@@ -9,5 +10,40 @@ body {
     justify-content: space-evenly;
     align-items: center;
     text-align: center;
+    margin: 0;
+}
+
+#content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+}
+
+#side-bar {
+    width: 20%;
+    max-width: 200px;
+    margin-right: 10px;
+    background-color: black;
+    color: white;
+}
+
+#todo-bar {
+    width: 40%;
+}
+
+#todo-top-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+}
+
+.task-div {
+    background-color: white;
+    border-radius: 10px;
+    height: 80px;
+    width: 300px;
 }
 
