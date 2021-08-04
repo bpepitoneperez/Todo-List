@@ -6,6 +6,8 @@ let newTaskActive = false;
 
 let newProjectActive = false;
 
+let editTaskActive = false;
+
 const content = document.getElementById('content');
 
 const sideBar = document.createElement('div');
@@ -98,8 +100,9 @@ function createTodoBar() {
             let editButton = document.createElement('button');
             editButton.textContent = 'edit';
             editButton.addEventListener('click', function() {
-                taskDiv.style.width = '340px';
-                taskDiv.style.height = '150px';
+                if(!editTaskActive) {
+                    editTask(taskDiv, task);
+                }
             });
             taskButtons.appendChild(editButton);
 
@@ -107,6 +110,7 @@ function createTodoBar() {
             deleteButton.textContent = 'delete';
             deleteButton.addEventListener('click', function() {
                 removeTodo(task, currentProject);
+                editTaskActive = false;
                 clearTasks();
             });
             taskButtons.appendChild(deleteButton);
@@ -192,7 +196,60 @@ function newProjectForm () {
 };
  
 
+function editTask (div, task) {
+    console.log(task);
+    editTaskActive = true;
+    div.style.width = '320px';
+    div.style.height = '120px';
 
+    while (div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+
+    let taskForm = document.createElement('form');
+    let editName = document.createElement('input');
+    editName.type = 'text';
+    editName.required = true;
+    editName.value = task.title;
+    taskForm.appendChild(editName);
+
+    let editDescription = document.createElement('input');
+    editDescription.type = 'textarea';
+    editDescription.value = task.description;
+    taskForm.appendChild(editDescription);
+
+    let editDate = document.createElement('input');
+    editDate.type = 'date';
+    editDate.textContent = task.dueDate;
+    editDate.placeholder = task.dueDate;
+    editDate.value = task.dueDate;
+    taskForm.appendChild(editDate);
+
+    let cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        editTaskActive = false;
+        clearTasks();
+    });
+    taskForm.appendChild(cancelButton);
+
+    let submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.textContent = "Submit";
+    taskForm.appendChild(submitButton);
+    taskForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        task.title = editName.value;
+        task.description = editDescription.value;
+        task.dueDate = editDate.value;
+        div.style.width = '300px';
+        div.style.heigh= '80px';
+        editTaskActive = false;
+        clearTasks();
+    });
+    div.appendChild(taskForm);
+}
 
 
 content.appendChild(sideBar);

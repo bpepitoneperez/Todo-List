@@ -15,14 +15,13 @@ const Project = (name) => {
     }
 }
 
-const Todo = (title, description, dueDate, project) => {
+const Todo = (title, description, dueDate) => {
     let index = 0;
     let complete = false;
     return {
         title,
         description,
         dueDate,
-        project,
         index,
         complete,
     }
@@ -64,22 +63,22 @@ const removeProject = (index) => {
 let defaultProject = Project('Default');
 addProject(defaultProject);
 
-let todo1 = Todo('Create', 'Create more tasks', 'tomorrow', defaultProject);
+let todo1 = Todo('Create', 'Create more tasks', 'tomorrow');
 
 addTodo(todo1, defaultProject);
 
-let todo2 = Todo('Creat2', 'Create more tasks', 'tomorrow', defaultProject);
+let todo2 = Todo('Creat2', 'Create more tasks', 'tomorrow');
 
 addTodo(todo2, defaultProject);
 
-let todo3 = Todo('Creat3', 'Create more tasks', 'tomorrow', defaultProject);
+let todo3 = Todo('Creat3', 'Create more tasks', 'tomorrow');
 
 addTodo(todo3, defaultProject);
 
 
 let project2 = Project("project2");
 addProject(project2);
-let todo4 = Todo('Creat3', 'Create more tasks', 'tomorrow', defaultProject);
+let todo4 = Todo('Creat3', 'Create more tasks', 'tomorrow');
 
 addTodo(todo4, project2);
 export {projects, Todo, Project, addTodo, removeTodo, addProject, removeProject}
