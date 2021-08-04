@@ -80,18 +80,42 @@ function createTodoBar() {
     reversedList.forEach(task => {
         let taskDiv = document.createElement('div');
         taskDiv.setAttribute('class', 'task-div');
+
+        let taskInfo = document.createElement('div');
         let taskName = document.createElement('p');
         taskName.setAttribute('class', 'task-name');
         taskName.textContent = task.title;
-        taskDiv.appendChild(taskName);
+        taskInfo.appendChild(taskName);
         let taskDuedate = document.createElement('p');
         taskDuedate.setAttribute('class', 'task-due-date');
         taskDuedate.textContent = task.dueDate;
-        taskDiv.appendChild(taskDuedate);
-        let taskPriority = document.createElement('p');
-        taskPriority.setAttribute('class', 'task-priority');
-        taskPriority.textContent = task.priority;
-        taskDiv.appendChild(taskPriority);
+        taskInfo.appendChild(taskDuedate);
+        taskDiv.appendChild(taskInfo);
+
+        let taskButtons = document.createElement('div');
+        taskDiv.appendChild(taskButtons);
+        taskDiv.addEventListener('mouseenter', function() {
+            let editButton = document.createElement('button');
+            editButton.textContent = 'edit';
+            editButton.addEventListener('click', function() {
+                taskDiv.style.width = '340px';
+                taskDiv.style.height = '150px';
+            });
+            taskButtons.appendChild(editButton);
+
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = 'delete';
+            deleteButton.addEventListener('click', function() {
+                removeTodo(task, currentProject);
+                clearTasks();
+            });
+            taskButtons.appendChild(deleteButton);
+        });
+        taskDiv.addEventListener('mouseleave', function() {
+            while (taskButtons.firstChild) {
+                taskButtons.removeChild(taskButtons.firstChild);
+            }
+        });
         todoBar.appendChild(taskDiv);
     });
 }
