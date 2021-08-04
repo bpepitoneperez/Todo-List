@@ -1,6 +1,6 @@
-import {createSidebar, createTodoBar} from './DOMdisplay'
+import {createSidebar, createTasksBar} from './DOMdisplay'
 
 
 
 createSidebar();
-createTodoBar();
+createTasksBar();

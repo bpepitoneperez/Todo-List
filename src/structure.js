@@ -1,3 +1,5 @@
+import { compareAsc, format } from 'date-fns'
+
 const projects = [];
 let projectsIndex = 0;
 
@@ -63,22 +65,8 @@ const removeProject = (index) => {
 let defaultProject = Project('Default');
 addProject(defaultProject);
 
-let todo1 = Todo('Create', 'Create more tasks', 'tomorrow');
+let todo1 = Todo('Try it out', 'Create more tasks', new Date(2021, 12, 21));
 
 addTodo(todo1, defaultProject);
 
-let todo2 = Todo('Creat2', 'Create more tasks', 'tomorrow');
-
-addTodo(todo2, defaultProject);
-
-let todo3 = Todo('Creat3', 'Create more tasks', 'tomorrow');
-
-addTodo(todo3, defaultProject);
-
-
-let project2 = Project("project2");
-addProject(project2);
-let todo4 = Todo('Creat3', 'Create more tasks', 'tomorrow');
-
-addTodo(todo4, project2);
 export {projects, Todo, Project, addTodo, removeTodo, addProject, removeProject}
