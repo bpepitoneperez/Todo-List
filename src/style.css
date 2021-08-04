@@ -2,6 +2,7 @@ html {
     padding: 0;
     margin: 0;
     background-color: #e8ecee;
+    font-family: 'Quicksand', sans-serif;
 }
 
 body {
@@ -24,8 +25,34 @@ body {
     width: 20%;
     max-width: 200px;
     margin-right: 10px;
-    background-color: black;
+    background-color: rgb(73, 72, 72);
     color: white;
+}
+
+#side-title {
+    font-weight: 600;
+}
+
+.project-links {
+    padding: 10px;
+}
+
+.project-links:hover {
+    background-color: rgb(100, 98, 98);
+}
+
+#new-project-button {
+    margin-top: 5px;
+    background-color: rgb(73, 72, 72);
+    color: white;
+    border: none;
+    padding: 8px 13px;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+#new-project-button:hover {
+    background-color: rgb(100, 98, 98);
 }
 
 #todo-bar {
@@ -40,10 +67,28 @@ body {
     width: 300px;
 }
 
+#new-task-button {
+    margin-top: 5px;
+    background-color: #e8ecee;
+    color: black;
+    border: none;
+    padding: 8px 13px;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+#new-task-button:hover {
+    background-color: #c3d0d6;
+}
+
 .task-div {
     background-color: white;
     border-radius: 10px;
     height: 80px;
     width: 300px;
+}
+
+.task-div:hover {
+    box-shadow: 0 0 2px rgb(100, 98, 98);
 }
 

@@ -22,14 +22,14 @@ doneBar.id = 'done-bar';
 const createSidebar = () => {
     const sideTitle = document.createElement('p');
     sideTitle.id = 'side-title';
-    sideTitle.textContent = 'Too Much To Do';
+    sideTitle.textContent = 'Too-Much To-Do';
     sideBar.appendChild(sideTitle);
 
     const projectList = document.createElement('div');
     projects.forEach(project => {
         let currProj = document.createElement('div');
         if (project == currentProject) {
-            currProj.style.color = 'red';
+            currProj.style.backgroundColor = 'rgb(100, 98, 98)';
         };
         currProj.setAttribute('class', 'project-links');
         currProj.addEventListener('click', () => {
@@ -197,7 +197,6 @@ function newProjectForm () {
  
 
 function editTask (div, task) {
-    console.log(task);
     editTaskActive = true;
     div.style.width = '320px';
     div.style.height = '120px';
@@ -220,8 +219,6 @@ function editTask (div, task) {
 
     let editDate = document.createElement('input');
     editDate.type = 'date';
-    editDate.textContent = task.dueDate;
-    editDate.placeholder = task.dueDate;
     editDate.value = task.dueDate;
     taskForm.appendChild(editDate);
 
