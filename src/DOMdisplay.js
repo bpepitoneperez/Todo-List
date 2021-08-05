@@ -1,5 +1,5 @@
 import {projects, Todo, Project, addTodo, removeTodo, setTodo, updateDescription, updateTitle, updateDate, addProject, removeProject, updateProject} from './structure'
-import { compareAsc, format, formatDistanceToNowStrict } from 'date-fns'
+import {closeBlack, deleteBlack, deleteWhite, doneBlack, doneWhite, editBlack, editWhite} from './index'
 
 
 let currentProject = projects[0];
@@ -50,7 +50,7 @@ const createSidebar = () => {
         currProj.appendChild(projectButtons);
         currProj.addEventListener('mouseenter', function() {
             let editProjectButton = document.createElement('img');
-            editProjectButton.src = '../src/edit-white.png'
+            editProjectButton.src = editWhite;
             editProjectButton.setAttribute('class', 'project-button');
             editProjectButton.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -61,7 +61,7 @@ const createSidebar = () => {
             projectButtons.appendChild(editProjectButton);
 
             let deleteProjectButton = document.createElement('img');
-            deleteProjectButton.src = '../src/delete-white.png'
+            deleteProjectButton.src = deleteWhite;
             deleteProjectButton.setAttribute('class', 'project-button');
             deleteProjectButton.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -194,7 +194,7 @@ function createTasksBar() {
                 taskDiv.appendChild(taskButtons);
                 taskDiv.addEventListener('mouseenter', function() {
                     let editButton = document.createElement('img');
-                    editButton.src = '../src/edit-black.png';
+                    editButton.src = editBlack;
                     editButton.setAttribute('class', 'task-button');
                     editButton.addEventListener('click', function() {
                         if(!editTaskActive && !newTaskActive) {
@@ -204,7 +204,7 @@ function createTasksBar() {
                     taskButtons.appendChild(editButton);
 
                     let deleteButton = document.createElement('img');
-                    deleteButton.src = '../src/delete-black.png'
+                    deleteButton.src = deleteBlack;
                     deleteButton.setAttribute('class', 'task-button');
                     deleteButton.addEventListener('click', function() {
                         removeTodo(task, currentProject);
@@ -266,7 +266,7 @@ function newTaskForm() {
         let newTaskButtons = document.createElement('div');
         newTaskButtons.setAttribute('class', 'new-task-buttons');
         let cancelButton = document.createElement('img');
-        cancelButton.src = '../src/close-black.png';
+        cancelButton.src = closeBlack;
         cancelButton.setAttribute('class', 'task-form-buttons');
         cancelButton.addEventListener('click', function(event) {
             newTaskActive = false;
@@ -276,7 +276,7 @@ function newTaskForm() {
 
         let submitButton = document.createElement('input');
         submitButton.type = 'image';
-        submitButton.src = '../src/done-black.png';
+        submitButton.src = doneBlack;
         submitButton.setAttribute('class', 'task-form-buttons');
         newTaskButtons.appendChild(submitButton);
         newTaskForm.appendChild(newTaskButtons);
@@ -361,7 +361,7 @@ function editProject(div, project) {
     let submitButton = document.createElement('input');
     submitButton.setAttribute('class', 'project-edit-buttons');
     submitButton.type = 'image';
-    submitButton.src = '../src/done-white.png';
+    submitButton.src = doneWhite;
     projectForm.appendChild(submitButton);
     projectForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -422,7 +422,7 @@ function editTask (div, task) {
     
     let editButtonDiv = document.createElement('div');
     let cancelButton = document.createElement('img');
-    cancelButton.src = '../src/close-black.png';
+    cancelButton.src = closeBlack;
     cancelButton.setAttribute('class', 'task-form-buttons');
     cancelButton.addEventListener('click', function(event) {
         editTaskActive = false;
@@ -432,7 +432,7 @@ function editTask (div, task) {
 
     let submitButton = document.createElement('input');
     submitButton.type = 'image';
-    submitButton.src = '../src/done-black.png';
+    submitButton.src = doneBlack;
     submitButton.setAttribute('class', 'task-form-buttons');
     editButtonDiv.appendChild(submitButton);
 
