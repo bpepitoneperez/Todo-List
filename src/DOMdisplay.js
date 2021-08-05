@@ -1,11 +1,6 @@
 import {projects, Todo, Project, addTodo, removeTodo, setTodo, updateDescription, updateTitle, updateDate, addProject, removeProject, updateProject} from './structure'
 import { compareAsc, format, formatDistanceToNowStrict } from 'date-fns'
-import './delete-black.png'
-import './delete-white.png'
-import './done-black.png'
-import './done-white.png'
-import './edit-black.png'
-import './edit-white.png'
+
 
 let currentProject = projects[0];
 
