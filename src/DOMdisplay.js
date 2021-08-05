@@ -11,8 +11,10 @@ let newProjectActive = false;
 let editTaskActive = false;
 
 let editProjectActive = false;
-
-const content = document.getElementById('content');
+const body = document.body;
+const content = document.createElement('div');
+content.id = 'content';
+body.appendChild(content);
 
 const sideBar = document.createElement('div');
 sideBar.id = 'side-bar';
