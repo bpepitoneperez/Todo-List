@@ -24,21 +24,66 @@ body {
 #side-bar {
     width: 20%;
     max-width: 200px;
-    margin-right: 10px;
+    margin-right: 8px;
     background-color: rgb(73, 72, 72);
     color: white;
+    border-radius: 10px;
 }
 
 #side-title {
     font-weight: 600;
 }
 
-.project-links {
+.project-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 20px;
     padding: 10px;
+    margin-bottom: 4px;
 }
 
-.project-links:hover {
+.project-div:hover {
     background-color: rgb(100, 98, 98);
+}
+
+.project-names {
+    text-align: start;
+    width: 60%;
+}
+
+.project-names:hover {
+    cursor:pointer;
+}
+
+.project-button {
+    padding: 3px;
+    border-radius: 20px;
+}
+
+.project-button:hover {
+    background-color: rgb(73, 72, 72);
+    cursor: pointer;
+}
+
+.edit-project-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.new-project-input {
+    background-color: rgb(100, 98, 98);
+    color: white;
+    width: 78%;
+}
+
+.new-project-input:focus {
+    border: none;
+    outline: none;
 }
 
 #new-project-button {
@@ -53,6 +98,7 @@ body {
 
 #new-project-button:hover {
     background-color: rgb(100, 98, 98);
+    cursor: pointer;
 }
 
 #new-project-name {
@@ -64,6 +110,14 @@ body {
 
 #todo-bar {
     width: 40%;
+    border-right: solid;
+    border-width: 1px;
+    border-color: #c3d0d6;
+    margin-right: 10px;
+}
+
+#done-bar {
+    width: 40%;
 }
 
 #todo-top-div {
@@ -71,7 +125,27 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 300px;
+    width: 100%;
+}
+
+#done-top-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#task-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#done-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 #new-task-button {
@@ -86,6 +160,7 @@ body {
 
 #new-task-button:hover {
     background-color: #c3d0d6;
+    cursor: pointer;
 }
 
 .task-div {
@@ -112,6 +187,16 @@ body {
     padding-left: 3px;
 }
 
+.task-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.complete-box {
+    border: none;
+}
+
 .task-due-date {
     font-size: 13px;
 }
@@ -125,7 +210,6 @@ body {
     padding-right: 3px;
 }
 
-
 .task-button {
     background-color: #e8ecee;
     color: black;
@@ -136,5 +220,94 @@ body {
 
 .task-button:hover {
     background-color: #c3d0d6;
+    cursor: pointer;
+    cursor: pointer;
 }
 
+.task-form-buttons {
+    padding: 3px;
+    border-radius: 10px;
+}
+
+.task-form-buttons:hover {
+    background-color: #c3d0d6;
+    cursor: pointer;
+}
+
+.new-task-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+.new-task-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 85%;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+.new-task-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.complete-box:hover {
+    cursor: pointer;
+}
+
+.task-description {
+    max-width: 300px;
+    max-height: 80px;
+    min-width: 300px;
+    min-height: 80px;
+    border: none
+}
+
+.task-description:focus {
+    outline: none;
+    border: none
+}
+
+.edit-task-form {
+    width: 90%;
+    height: 90%;
+    margin-left: 5px;
+    margin-top: 5px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.edit-task-bottom {
+    display: flex;
+    flex-direction: row;
+    width: 108%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input-stylings {
+    border: none;
+}
+
+.input-stylings:focus {
+    border: none;
+    outline: none;
+}
+
+.date-stylings {
+    border: none;
+    outline: none;
+}
+
+.date-stylings:hover {
+    background-color: #c3d0d6;
+}

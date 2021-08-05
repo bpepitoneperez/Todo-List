@@ -1,4 +1,5 @@
-import {projects, Todo, Project, addTodo, removeTodo, addProject, removeProject} from './structure'
+import {projects, Todo, Project, addTodo, removeTodo, setTodo, addProject, removeProject} from './structure'
+import { compareAsc, format, formatDistanceToNowStrict } from 'date-fns'
 
 let currentProject = projects[0];
 
@@ -30,11 +31,12 @@ const createSidebar = () => {
     const projectList = document.createElement('div');
     projects.forEach(project => {
         let currProj = document.createElement('div');
+        currProj.setAttribute('class', 'project-div');
         let currProjName = document.createElement('div');
         if (project == currentProject) {
             currProj.style.backgroundColor = 'rgb(100, 98, 98)';
         };
-        currProj.setAttribute('class', 'project-links');
+        currProjName.setAttribute('class', 'project-names');
         currProjName.addEventListener('click', () => {
             currentProject = project;
             clearTasks();
@@ -43,11 +45,12 @@ const createSidebar = () => {
         currProjName.textContent = project.name;
         currProj.appendChild(currProjName);
         let projectButtons = document.createElement('div');
+        projectButtons.setAttribute('class', 'project-buttons');
         currProj.appendChild(projectButtons);
         currProj.addEventListener('mouseenter', function() {
-            let editProjectButton = document.createElement('button');
-            editProjectButton.textContent = "#";
-            editProjectButton.setAttribute('class', 'project-buttons');
+            let editProjectButton = document.createElement('img');
+            editProjectButton.src = '../src/edit-white.png'
+            editProjectButton.setAttribute('class', 'project-button');
             editProjectButton.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (!editProjectActive) {
@@ -56,9 +59,9 @@ const createSidebar = () => {
             });
             projectButtons.appendChild(editProjectButton);
 
-            let deleteProjectButton = document.createElement('button');
-            deleteProjectButton.textContent = 'X';
-            deleteProjectButton.setAttribute('class', 'project-buttons');
+            let deleteProjectButton = document.createElement('img');
+            deleteProjectButton.src = '../src/delete-white.png'
+            deleteProjectButton.setAttribute('class', 'project-button');
             deleteProjectButton.addEventListener('click', function(e) {
                 e.stopPropagation();
                 editProjectActive = false;
@@ -94,6 +97,8 @@ function clearTasks() {
     while (doneBar.firstChild) {
         doneBar.removeChild(doneBar.firstChild);
     }
+    editTaskActive = false;
+    newTaskActive = false;
     createTasksBar();
 };
 
@@ -113,7 +118,11 @@ function createTasksBar() {
     const newTaskButton = document.createElement('button');
     newTaskButton.id = 'new-task-button';
     newTaskButton.textContent = '+';
-    newTaskButton.addEventListener('click', newTaskForm);
+    newTaskButton.addEventListener('click', function() {
+        if (!editTaskActive) {
+            newTaskForm();
+        }
+    });
     todoTopDiv.appendChild(newTaskButton);
     todoBar.appendChild(todoTopDiv);
 
@@ -124,11 +133,18 @@ function createTasksBar() {
     doneTopDiv.appendChild(doneTitle);
     doneBar.appendChild(doneTopDiv);
 
+    let taskSection = document.createElement('div');
+    taskSection.id = "task-section";
+    todoBar.appendChild(taskSection);
+
+    let doneSection = document.createElement('div');
+    doneSection.id = 'done-section';
+    doneBar.appendChild(doneSection);
     if (currentProject == null) {
         let noTasks = document.createElement('p');
         noTasks.id = 'no-tasks';
         noTasks.textContent = 'Add a project';
-        todoBar.appendChild(noTasks);
+        taskSection.appendChild(noTasks);
     }
     else {
         let reversedList = currentProject.list.slice();
@@ -136,7 +152,7 @@ function createTasksBar() {
             let noTasks = document.createElement('p');
             noTasks.id = 'no-tasks';
             noTasks.textContent = 'Add some tasks';
-            todoBar.appendChild(noTasks);
+            taskSection.appendChild(noTasks);
         }
         else {
             reversedList.reverse();
@@ -148,6 +164,7 @@ function createTasksBar() {
                 taskLeft.setAttribute('class', 'task-left');
 
                 let taskInfo = document.createElement('div');
+                taskInfo.setAttribute('class', 'task-info')
                 let taskComplete = document.createElement('input');
                 taskComplete.type = 'checkbox';
                 taskComplete.setAttribute('class', 'complete-box');
@@ -155,7 +172,7 @@ function createTasksBar() {
                     taskComplete.checked = true;
                 }
                 taskComplete.addEventListener('click', function() {
-                    task.complete = !task.complete;
+                    setTodo(task);
                     clearTasks();
                 });
                 taskInfo.appendChild(taskComplete);
@@ -175,22 +192,23 @@ function createTasksBar() {
                 taskButtons.setAttribute('class', 'task-buttons');
                 taskDiv.appendChild(taskButtons);
                 taskDiv.addEventListener('mouseenter', function() {
-                    let editButton = document.createElement('button');
-                    editButton.textContent = '#';
+                    let editButton = document.createElement('img');
+                    editButton.src = '../src/edit-black.png';
                     editButton.setAttribute('class', 'task-button');
                     editButton.addEventListener('click', function() {
-                        if(!editTaskActive) {
+                        if(!editTaskActive && !newTaskActive) {
                             editTask(taskDiv, task);
                         }
                     });
                     taskButtons.appendChild(editButton);
 
-                    let deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'X';
+                    let deleteButton = document.createElement('img');
+                    deleteButton.src = '../src/delete-black.png'
                     deleteButton.setAttribute('class', 'task-button');
                     deleteButton.addEventListener('click', function() {
                         removeTodo(task, currentProject);
                         editTaskActive = false;
+                        newTaskActive = false;
                         clearTasks();
                     });
                     taskButtons.appendChild(deleteButton);
@@ -201,10 +219,10 @@ function createTasksBar() {
                     }
                 });
                 if (task.complete) {
-                    doneBar.appendChild(taskDiv);
+                    doneSection.appendChild(taskDiv);
                 }
                 else {
-                    todoBar.appendChild(taskDiv);
+                    taskSection.appendChild(taskDiv);
                 }
                 
             });
@@ -228,19 +246,46 @@ function newTaskForm() {
         newTaskDiv.setAttribute('class', 'task-div');
         newTaskDiv.id = 'new-task-div';
         let newTaskForm = document.createElement('form');
+        newTaskForm.setAttribute('class', 'new-task-form');
+        let newTaskInfo = document.createElement('div');
+        newTaskInfo.setAttribute('class', 'new-task-info');
         let newTaskName = document.createElement('input');
+        newTaskName.maxLength = '30';
         newTaskName.type = 'text';
         newTaskName.required = true;
         newTaskName.setAttribute('placeholder', 'Enter Task Name');
-        newTaskForm.appendChild(newTaskName);
+        newTaskName.setAttribute('class', 'input-stylings');
+        newTaskInfo.appendChild(newTaskName);
         let newTaskDate = document.createElement('input');
         newTaskDate.type = 'date';
-        newTaskForm.appendChild(newTaskDate);
+        newTaskDate.setAttribute('class', 'date-stylings');
+        newTaskInfo.appendChild(newTaskDate);
+        newTaskForm.appendChild(newTaskInfo);
 
-        let submitButton = document.createElement('button');
-        submitButton.type = 'submit';
-        submitButton.textContent = "Create";
-        newTaskForm.appendChild(submitButton);
+        let newTaskButtons = document.createElement('div');
+        newTaskButtons.setAttribute('class', 'new-task-buttons');
+        let cancelButton = document.createElement('img');
+        cancelButton.src = '../src/close-black.png';
+        cancelButton.setAttribute('class', 'task-form-buttons');
+        cancelButton.addEventListener('click', function(event) {
+            newTaskActive = false;
+            clearTasks();
+        });
+        newTaskButtons.appendChild(cancelButton);
+
+        let submitButton = document.createElement('input');
+        submitButton.type = 'image';
+        submitButton.src = '../src/done-black.png';
+        submitButton.setAttribute('class', 'task-form-buttons');
+        newTaskButtons.appendChild(submitButton);
+        newTaskForm.appendChild(newTaskButtons);
+
+        newTaskForm.addEventListener('keyup', function(e) {
+            if (e.key == 'Escape') {
+                cancelButton.click();
+            }
+        });
+
         newTaskForm.addEventListener('submit', (event) => {
             event.preventDefault();
             name = newTaskName.value;
@@ -251,12 +296,7 @@ function newTaskForm() {
             clearTasks();
         });
 
-        newTaskForm.addEventListener('keyup', function(e) {
-            if (e.key == 'Escape') {
-                newTaskActive = false;
-                clearTasks();
-            }
-        });
+        
 
         newTaskDiv.appendChild(newTaskForm);
         let titleBar = document.getElementById('todo-top-div');
@@ -276,6 +316,7 @@ function newProjectForm () {
     let newForm = document.createElement('form');
     let newProjName = document.createElement('input');
     newProjName.id = 'new-project-name';
+    newProjName.maxLength = '30';
     newProjName.type = 'text';
     newProjName.style.width = '100px';
     newProjName.required = true;
@@ -310,23 +351,16 @@ function editProject(div, project) {
         div.removeChild(div.firstChild);
     }
     let projectForm = document.createElement('form');
+    projectForm.setAttribute('class', 'edit-project-div');
     let editName = document.createElement('input');
+    editName.maxLength = '30';
+    editName.setAttribute('class', 'new-project-input');
     editName.value = project.name;
     projectForm.appendChild(editName);
-    let cancelButton = document.createElement('button');
-    cancelButton.setAttribute('class', 'project-edit-buttons');
-    cancelButton.textContent = 'X';
-    cancelButton.type = 'button';
-    cancelButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        editProjectActive = false;
-        clearSidebar();
-    });
-    projectForm.appendChild(cancelButton);
-    let submitButton = document.createElement('button');
+    let submitButton = document.createElement('input');
     submitButton.setAttribute('class', 'project-edit-buttons');
-    submitButton.textContent = "v/";
-    submitButton.type = 'submit';
+    submitButton.type = 'image';
+    submitButton.src = '../src/done-white.png';
     projectForm.appendChild(submitButton);
     projectForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -336,57 +370,73 @@ function editProject(div, project) {
     });
 
     projectForm.addEventListener('keyup', function(e) {
-        if (e.key == 'Enter') {
-            submitButton.click();
-        }
-        else if (e.key == 'Escape') {
-            cancelButton.click();
+        if (e.key == 'Escape') {
+            editProjectActive = false;
+            clearSidebar();
         }
     });
 
     div.appendChild(projectForm);
+    editName.focus();
 }
 
 function editTask (div, task) {
     editTaskActive = true;
     div.style.width = '320px';
-    div.style.height = '120px';
+    div.style.height = '160px';
 
     while (div.firstChild) {
         div.removeChild(div.firstChild);
     }
 
     let taskForm = document.createElement('form');
+    taskForm.setAttribute('class', 'edit-task-form');
+    let editNameDiv = document.createElement('div');
+    editNameDiv.setAttribute('class', 'edit-task-name');
     let editName = document.createElement('input');
     editName.type = 'text';
     editName.required = true;
+    editName.maxLength = '30';
     editName.value = task.title;
-    taskForm.appendChild(editName);
+    editName.setAttribute('class', 'input-stylings');
+    editNameDiv.appendChild(editName);
+    taskForm.appendChild(editNameDiv);
 
-    let editDescription = document.createElement('input');
-    editDescription.type = 'textarea';
+    let editDescriptionDiv = document.createElement('div');
+    editDescriptionDiv.setAttribute('class', 'edit-task-description');
+    let editDescription = document.createElement('textarea');
+    editDescription.setAttribute('class', 'task-description');
+    editDescription.placeholder = 'Description';
     editDescription.value = task.description;
-    taskForm.appendChild(editDescription);
+    editDescriptionDiv.appendChild(editDescription);
+    taskForm.appendChild(editDescriptionDiv);
 
+    let editBottomDiv = document.createElement('div');
+    editBottomDiv.setAttribute('class', 'edit-task-bottom');
     let editDate = document.createElement('input');
+    editDate.setAttribute('class', 'date-stylings');
     editDate.type = 'date';
     editDate.value = task.dueDate;
-    taskForm.appendChild(editDate);
-
-    let cancelButton = document.createElement('button');
-    cancelButton.textContent = 'Cancel';
-    cancelButton.type = 'button';
+    editBottomDiv.appendChild(editDate);
+    
+    let editButtonDiv = document.createElement('div');
+    let cancelButton = document.createElement('img');
+    cancelButton.src = '../src/close-black.png';
+    cancelButton.setAttribute('class', 'task-form-buttons');
     cancelButton.addEventListener('click', function(event) {
-        event.preventDefault();
         editTaskActive = false;
         clearTasks();
     });
-    taskForm.appendChild(cancelButton);
+    editButtonDiv.appendChild(cancelButton);
 
-    let submitButton = document.createElement('button');
-    submitButton.type = 'submit';
-    submitButton.textContent = "Submit";
-    taskForm.appendChild(submitButton);
+    let submitButton = document.createElement('input');
+    submitButton.type = 'image';
+    submitButton.src = '../src/done-black.png';
+    submitButton.setAttribute('class', 'task-form-buttons');
+    editButtonDiv.appendChild(submitButton);
+
+    editBottomDiv.appendChild(editButtonDiv);
+
     taskForm.addEventListener('submit', (event) => {
         event.preventDefault();
         task.title = editName.value;
@@ -398,13 +448,12 @@ function editTask (div, task) {
         clearTasks();
     });
     taskForm.addEventListener('keyup', function(e) {
-        if (e.key == 'Enter') {
-            submitButton.click();
-        }
-        else if (e.key == 'Escape') {
+        if (e.key == 'Escape') {
             cancelButton.click();
         }
     });
+
+    taskForm.appendChild(editBottomDiv);
 
     div.appendChild(taskForm);
 }
