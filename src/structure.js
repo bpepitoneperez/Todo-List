@@ -74,7 +74,9 @@ const Project = (name) => {
 const Todo = (title, description, dueDate) => {
     let index = 0;
     let complete = false;
-    //dueDate = format(dueDate, 'MM-dd-yyyy');
+    // if (dueDate != "") {
+    //     dueDate = format(dueDate, 'MM-dd-yyyy');
+    // }
     return {
         title,
         description,
@@ -109,6 +111,27 @@ const setTodo = (todo) => {
     updateLocal();
 }
 
+const updateDescription = (todo, description) => {
+    todo.description = description;
+    updateLocal();
+}
+
+const updateTitle = (todo, title) => {
+    todo.title = title;
+    updateLocal();
+}
+
+const updateDate = (todo, date) => {
+    //console.log(date);
+    todo.dueDate = date;
+    // if (todo.dueDate != "") {
+    //     let date = new Date(todo.dueDate);
+    //     todo.dueDate = format(date, 'MM-dd-yyyy');
+    //     console.log(todo.dueDate);
+    // }
+    updateLocal();
+}
+
 const addProject = (proj) => {
     projects.push(proj);
     projectsIndex++;
@@ -126,14 +149,20 @@ const removeProject = (index) => {
     updateLocal();
 }
 
+const updateProject = (project, name) => {
+    project.name = name;
+    updateLocal();
+}
+
 if (projects.length == 0) {
     let defaultProject = Project('Default');
     addProject(defaultProject);
 
-    let todo1 = Todo('Try it out', 'Create more tasks', new Date(2021, 7, 5));
+    let todo1 = Todo('Try it out', 'Create more tasks', new Date(2025, 11, 31));
 
     addTodo(todo1, defaultProject);
 }
 
 
-export {projects, projectsIndex, Todo, Project, addTodo, removeTodo, setTodo, addProject, removeProject}
+export {projects,
+     projectsIndex, Todo, Project, addTodo, removeTodo, setTodo, updateDescription, updateTitle, updateDate, addProject, removeProject, updateProject}

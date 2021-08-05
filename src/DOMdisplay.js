@@ -1,4 +1,4 @@
-import {projects, Todo, Project, addTodo, removeTodo, setTodo, addProject, removeProject} from './structure'
+import {projects, Todo, Project, addTodo, removeTodo, setTodo, updateDescription, updateTitle, updateDate, addProject, removeProject, updateProject} from './structure'
 import { compareAsc, format, formatDistanceToNowStrict } from 'date-fns'
 
 let currentProject = projects[0];
@@ -364,7 +364,7 @@ function editProject(div, project) {
     projectForm.appendChild(submitButton);
     projectForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        project.name = editName.value;
+        updateProject(project, editName.value);
         editProjectActive = false;
         clearSidebar();
     });
@@ -439,9 +439,9 @@ function editTask (div, task) {
 
     taskForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        task.title = editName.value;
-        task.description = editDescription.value;
-        task.dueDate = editDate.value;
+        updateTitle(task, editName.value);
+        updateDescription(task, editDescription.value);
+        updateDate(task, editDate.value);
         div.style.width = '300px';
         div.style.heigh= '80px';
         editTaskActive = false;
